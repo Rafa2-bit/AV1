@@ -17,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/Rafa2-bit/AV1/issues"
   },
-  "homepage": "https://github.com/Rafa2-bit/AV1#readme"
+  "homepage": "https://github.com/Rafa2-bit/AV1#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
 }

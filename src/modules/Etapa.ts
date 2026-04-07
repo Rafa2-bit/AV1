@@ -1,10 +1,5 @@
 import Funcionario from "./Funcionario"
-
-export enum StatusEtapa {
-    PENDENTE = "PENDENTE",
-    ANDAMENTO = "ANDAMENTO",
-    CONCLUIDA = "CONCLUIDA"
-}
+import { StatusEtapa } from "../enums/StatusEtapa"
 
 export default class Etapa {
     public nome: string
@@ -16,5 +11,20 @@ export default class Etapa {
         this.prazo = prazo
         this.status = status
         this.funcionarios = funcionarios
+    }
+    public iniciar() {
+        this.status = StatusEtapa.ANDAMENTO
+        console.log(`\nEtapa ${this.nome} INICIADA\n`)
+    }
+    public finalizar() {
+        this.status = StatusEtapa.CONCLUIDA
+        console.log(`\nEtapa ${this.nome} FINALIZADA\n`)
+    }
+    public associarFuncionario(f: Funcionario) {
+        this.funcionarios.push(f)
+        console.log(`\nFuncionário ID: ${f.id} Nome: ${f.nome} ADICIONADO\n`)
+    }
+    public listaFuncionarios() {
+        return this.funcionarios
     }
 }
