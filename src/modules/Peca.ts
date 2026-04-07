@@ -15,6 +15,8 @@ export default class Peca {
         this.fornecedor = fornecedor
         this.status = status
     }
+
+
     public atualizarStatus(novoStatus: StatusPeca, a: Aeronave) {
         const pc = a.pecas.find((p) => this.nome === p.nome)
 
@@ -23,26 +25,30 @@ export default class Peca {
             fs.writeFileSync(this.filePath(a), dados)
             console.log('\Status da Peça ATUALIZADO no arquivo')
 
-        } 
+        }
+
         if (pc) {
             pc.status = novoStatus
             console.log('\nStatus da Peça ATUALIZADO')
         }
+
     }
+
 
     public salvar(a: Aeronave) {
         const dados = JSON.stringify(this, null, 2)
 
-        if (fs.existsSync(this.filePath(a))) {
-            console.log('\nPeça já existe')
-        }
+        if (fs.existsSync(this.filePath(a))) { console.log('\nPeça já existe') }
          
         else {
             fs.writeFileSync(this.filePath(a), dados, 'utf-8')
             console.log('\nPeça SALVADA')
         }
     }
+
+
     public static carregar(nome:string, codigo:any) {
+
         if (fs.existsSync(`../AV1/src/files/pecas/${nome}${codigo}.txt`)) {
             const fl = fs.readFileSync(`../AV1/src/files/pecas/${nome}${codigo}.txt`, 'utf-8')
             const atributos = JSON.parse(fl)
@@ -50,28 +56,29 @@ export default class Peca {
             console.log("\nPeça CARREGADA")
         } 
         
-        else {
-            console.log("\nPeça não encontrada")
-        }
+        else { console.log("\nPeça não encontrada") }
+
     }
+
+
     public remover(a: Aeronave) {
         const pc = a.pecas.findIndex((p) => this.nome === p.nome)
 
         if (fs.existsSync(this.filePath(a))) {
             fs.unlinkSync(this.filePath(a))
             console.log("\nArquivo da Peça REMOVIDO")
+
             if (pc) {
                 a.pecas.splice(pc, 1)
                 console.log("\nPeça REMOVIDA da Aeronave")
             }
+
         } 
         
-        else {
-            console.log("\nPeça não encontrada")
-        }
+        else { console.log("\nPeça não encontrada") }
     }
     
-    private filePath(a: Aeronave) {
-        return `../AV1/src/files/pecas/${this.nome}${a.codigo}.txt`
-    }
+    private filePath(a: Aeronave) { return `../AV1/src/files/pecas/${this.nome}${a.codigo}.txt` }
+
+    
 }

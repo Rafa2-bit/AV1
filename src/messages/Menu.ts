@@ -1,5 +1,5 @@
 
-import { leitor, aeronaves, pecas, funcionarios, etapas, testes, relatorios, caseA, caseP, caseE, caseF, caseT, validarCdg, enTpAeronave, enTpPeca, enStPeca, enStEtapa, enNvPerm, enTpTeste, enRsTeste } from '../messages/Events'
+import * as Events from '../messages/Events'
 import Aeronave from '../modules/Aeronave';
 import { TipoAeronave } from '../enums/TipoAeronave';
 import Peca from '../modules/Peca';
@@ -7,7 +7,6 @@ import { TipoPeca, StatusPeca } from '../enums/TipoStatusPeca';
 import Etapa from '../modules/Etapa';
 import { StatusEtapa } from "../enums/StatusEtapa";
 import Teste from '../modules/Teste';
-import { TipoTeste, ResultadoTeste } from '../enums/TipoStatusTeste';
 import { iniciar } from '../app/Main'
 import Mensagens from '../messages/Mensagem'
 import Funcionario from '../modules/Funcionario'
@@ -22,16 +21,19 @@ export function menuA() {
     console.log("5 - Detalhes")
     console.log('6 - Voltar ao Menu Principal')
 
-    leitor.question("\nDigite a opção: ", (opcao:any) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao:any) => {
+
         switch (opcao) {
+            
+
             case "1":
-                validarCdg((codigo:any) => {
-                    leitor.question("Modelo: ", (modelo:any) => {
-                        enTpAeronave((tipo:any) => {
-                            leitor.question("Capacidade: ", (capacidade:any) => {
-                                leitor.question("Alcance: ", (alcance:any) => {
+                Events.validarCdg((codigo:any) => {
+                    Events.leitor.question("Modelo: ", (modelo:any) => {
+                        Events.enTpAeronave((tipo:any) => {
+                            Events.leitor.question("Capacidade: ", (capacidade:any) => {
+                                Events.leitor.question("Alcance: ", (alcance:any) => {
                                     let novaA = new Aeronave(codigo, modelo, tipo, Number(capacidade), Number(alcance), [], [], [])
-                                    aeronaves.push(novaA)
+                                    Events.aeronaves.push(novaA)
                                     console.log("\nAeronave CADASTRADA")
                                     menuA()
                                 })
@@ -40,35 +42,49 @@ export function menuA() {
                     })
                 })
                 break;
+
+
             case "2":
-                caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
+                Events.caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
                     a.salvar()
                     menuA()
                 })
                 break;
+
+
             case "3":
-                leitor.question("Digite o código ca Aeronave: ", (codigo) => {
+                Events.leitor.question("Digite o código ca Aeronave: ", (codigo) => {
                     Aeronave.carregar(codigo)
                     menuA()
                 })
                 break;
+
+
             case "4":
-                caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
+                Events.caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
                     a.remover()
                     menuA()
                 })
                 break;
+
+
             case "5":
-                caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
+                Events.caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
                     a.detalhes()
                     menuA()
                 })
                 break;
+
+
             case "6":
                 iniciar()
                 break;
+
+
             default:
                 menuA()
+
+
         }
     })
 }
@@ -79,16 +95,19 @@ export function menuP() {
     console.log('5 - Atualizar Status')
     console.log('6 - Voltar ao Menu Principal')
 
-    leitor.question("\nDigite a opção: ", (opcao:any) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao:any) => {
+
         switch (opcao) {
+
+
             case "1":
-                leitor.question("\nNome: ", (nome:any) => {
-                    enTpPeca((tipo:any) => {
-                        leitor.question("Fornecedor: ", (fornecedor:any) => {
-                            enStPeca((status:any) => {
+                Events.leitor.question("\nNome: ", (nome:any) => {
+                    Events.enTpPeca((tipo:any) => {
+                        Events.leitor.question("Fornecedor: ", (fornecedor:any) => {
+                            Events.enStPeca((status:any) => {
                                 let novaP = new Peca(nome, tipo, fornecedor, status.toUpperCase() as StatusPeca)
-                                pecas.push(novaP)
-                                caseA("Digite o código da Aeronave associada: ", (c:any) => {
+                                Events.pecas.push(novaP)
+                                Events.caseA("Digite o código da Aeronave associada: ", (c:any) => {
                                     c.pecas.push(novaP)
                                     console.log("\nPeça CADASTRADA")
                                     menuP()
@@ -98,45 +117,59 @@ export function menuP() {
                     })
                 })
                 break;
+
+
             case "2":
-                caseP("\nDigite o nome da peça: ", (p: Peca) => {
-                    caseA("Digite o código da Aeronave associada: ", (c) => {
+                Events.caseP("\nDigite o nome da peça: ", (p: Peca) => {
+                    Events.caseA("Digite o código da Aeronave associada: ", (c) => {
                         p.salvar(c)
                         menuP()
                     })
                 })
                 break;
+
+
             case "3":
-                leitor.question("\nDigite o nome da peça: ", (nome) => {
-                    leitor.question("Digite o código da Aeronave associada: ", (c) => {
+                Events.leitor.question("\nDigite o nome da peça: ", (nome) => {
+                    Events.leitor.question("Digite o código da Aeronave associada: ", (c) => {
                         Peca.carregar(nome, c)
                         menuP()
                     })
                 })
                 break;
+
+
             case "4":
-                caseP("\nDigite o nome da peça: ", (p: Peca) => {
-                    caseA("Digite o código da Aeronave associada: ", (c) => {
+                Events.caseP("\nDigite o nome da peça: ", (p: Peca) => {
+                    Events.caseA("Digite o código da Aeronave associada: ", (c) => {
                         p.remover(c)
                         menuP()
                     })
                 })
                 break;
+
+
             case "5":
-                caseP("\nDigite o nome da peça: ", (p: Peca) => {
-                    caseA("Digite o código da Aeronave associada: ", (c) => {
-                        leitor.question("Digite o novo status(EM_PRODUCAO, EM_TRANSPORTE, PRONTA): ", (s) => {
+                Events.caseP("\nDigite o nome da peça: ", (p: Peca) => {
+                    Events.caseA("Digite o código da Aeronave associada: ", (c) => {
+                        Events.leitor.question("Digite o novo status(EM_PRODUCAO, EM_TRANSPORTE, PRONTA): ", (s) => {
                             p.atualizarStatus(s.toUpperCase() as StatusPeca, c)
                             menuP()
                         })
                     })
                 })
                 break;
+
+
             case "6":
                 iniciar()
                 break;
+
+
             default:
                 menuP()
+
+
         }
     })
 }
@@ -149,15 +182,18 @@ export function menuE() {
     console.log("4 - Associar Funcionários")
     console.log("5 - Visualizar Funcionários")
     console.log("6 - Voltar ao Menu Principal")
-    leitor.question("\nDigite a opção: ", (opcao) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao) => {
+
         switch (opcao) {
+
+
             case "1":
-                leitor.question("\nNome: ", (nome) => {
-                    leitor.question("Prazo: ", (prazo) => {
-                        enStEtapa((status:any) => {
+                Events.leitor.question("\nNome: ", (nome) => {
+                    Events.leitor.question("Prazo: ", (prazo) => {
+                        Events.enStEtapa((status:any) => {
                             let novaE = new Etapa(nome, prazo, status.toUpperCase() as StatusEtapa, [])
-                            etapas.push(novaE)
-                            caseA("Digite o código da Aeronava associada: ", (c) => {
+                            Events.etapas.push(novaE)
+                            Events.caseA("Digite o código da Aeronava associada: ", (c) => {
                                 c.etapas.push(novaE)
                                 console.log("\nEtapa CADASTRADA")
                                 menuE()
@@ -166,37 +202,50 @@ export function menuE() {
                     })
                 })
                 break;
+
+
             case "2":
-                caseE("\nDigite o nome da Etapa: ", (n) => {
+                Events.caseE("\nDigite o nome da Etapa: ", (n) => {
                     n.iniciar()
                     menuE()
                 })
                 break;
+
+
             case "3":
-                caseE("\nDigite o nome da Etapa: ", (n) => {
+                Events.caseE("\nDigite o nome da Etapa: ", (n) => {
                     n.finalizar()
                     menuE()
                 })
                 break;
+
+
             case "4":
-                caseE("\nDigite o nome da Etapa: ", (n) => {
-                    caseF("Digite a ID do funcionário: ", (i) => {
+                Events.caseE("\nDigite o nome da Etapa: ", (n) => {
+                    Events.caseF("Digite a ID do funcionário: ", (i) => {
                         n.associarFuncionario(i)
                         menuE()
                     })
                 })
                 break;
+
+
             case "5":
-                caseE("\nDigite o nome da Etapa: ", (n) => {
+                Events.caseE("\nDigite o nome da Etapa: ", (n) => {
                     console.log(n.listaFuncionarios())
                     menuE()
                 })
                 break;
+
+
             case "6":
                 iniciar()
                 break;
+
+
             default:
                 menuE()
+
         }
     })
 }
@@ -206,18 +255,21 @@ export function menuF() {
     msg.listarOpcoes()
     console.log('5 - Autenticar Usuário')
     console.log("6 - Voltar ao Menu Principal")
-    leitor.question("\nDigite a opção: ", (opcao) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao) => {
+
         switch (opcao) {
+
+
             case "1":
-                leitor.question("\nID: ", (id) => {
-                    leitor.question("Nome: ", (nome) => {
-                        leitor.question("Telefone: ", (telefone) => {
-                            leitor.question("Endereço: ", (endereco) => {
-                                leitor.question("Usuario: ", (usuario) => {
-                                    leitor.question("Senha: ", (senha) => {
-                                        enNvPerm((nivel:any) => {
+                Events.leitor.question("\nID: ", (id) => {
+                    Events.leitor.question("Nome: ", (nome) => {
+                        Events.leitor.question("Telefone: ", (telefone) => {
+                            Events.leitor.question("Endereço: ", (endereco) => {
+                                Events.leitor.question("Usuario: ", (usuario) => {
+                                    Events.leitor.question("Senha: ", (senha) => {
+                                        Events.enNvPerm((nivel:any) => {
                                             let novaF = new Funcionario(id, nome, telefone, endereco, usuario, senha, nivel.toUpperCase() as NivelPermissao)
-                                            funcionarios.push(novaF)
+                                            Events.funcionarios.push(novaF)
                                             console.log("\nFuncionário CADASTRADO")
                                             menuF()
                                         })
@@ -228,30 +280,38 @@ export function menuF() {
                     })
                 })
                 break;
+
+
             case "2":
-                caseF("\nDigite o ID da Funcionário: ", (f) => {
+                Events.caseF("\nDigite o ID da Funcionário: ", (f) => {
                     f.salvar()
                     menuF()
                 })
                 break;
+
+
             case "3":
-                leitor.question("\nDigite o ID da Funcionário: ", (f) => {
-                    leitor.question("\nDigite o nome do Funcionário: ", (nome) => {
+                Events.leitor.question("\nDigite o ID da Funcionário: ", (f) => {
+                    Events.leitor.question("\nDigite o nome do Funcionário: ", (nome) => {
                     Funcionario.carregar(f, nome)
                     menuF()
                     })
                 })
                 break;
+
+
             case "4":
-                caseF("\nDigite o ID da Funcionário: ", (f) => {
+                Events.caseF("\nDigite o ID da Funcionário: ", (f) => {
                     f.remover()
                     menuF()
                 })
                 break;
+
+
             case "5":
-                leitor.question("\nDigite o usuário do Funcionário: ", (u: string) => {
-                    leitor.question("Digite a senha do funcionário: ", (s: string) => {
-                        caseF("Digite a ID do funcionário: ", (f) => {
+                Events.leitor.question("\nDigite o usuário do Funcionário: ", (u: string) => {
+                    Events.leitor.question("Digite a senha do funcionário: ", (s: string) => {
+                        Events.caseF("Digite a ID do funcionário: ", (f) => {
                             const r = f.autenticarUsuario(u, s)
                             if (r == true) {
                                 console.log('\nFuncionário AUTENTICADO')
@@ -263,11 +323,17 @@ export function menuF() {
                     })
                 })
                 break;
+
+
             case "6":
                 iniciar()
                 break;
+
+
             default:
                 menuF()
+
+
         }
     })
 }
@@ -276,14 +342,17 @@ export function menuT() {
     console.log("\n--- Teste ---")
     msg.listarOpcoes()
     console.log('5 - Voltar ao Menu Principal')
-    leitor.question("\nDigite a opção: ", (opcao) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao) => {
+
         switch (opcao) {
+
+
             case "1":
-                enTpTeste((tipo:any) => {
-                    enRsTeste((resultado:any) => {
+                Events.enTpTeste((tipo:any) => {
+                    Events.enRsTeste((resultado:any) => {
                         let novaT = new Teste(tipo, resultado)
-                        testes.push(novaT)
-                        caseA("Digite a Aeronave relacionada: ", (a) => {
+                        Events.testes.push(novaT)
+                        Events.caseA("Digite a Aeronave relacionada: ", (a) => {
                             a.historicoDeTestes.push(novaT)
                             console.log("\nTeste CADASTRADO")
                             menuT()
@@ -291,32 +360,49 @@ export function menuT() {
                     })
                 })
                 break;
+
+
             case "2":
-                caseA("\nDigite o código da Aeronave verificada: ", (a) => {
-                    caseT("Digite tipo do Teste: ", (tp) => {
+                Events.caseA("\nDigite o código da Aeronave verificada: ", (a) => {
+                    Events.caseT("Digite tipo do Teste: ", (tp) => {
                         tp.salvar(a)
+                        menuT()
                     })
                 })
+                menuT()
                 break;
+
+
             case "3":
-                leitor.question("\nDigite o código da Aeronave verificada: ", (a) => {
-                    leitor.question("Digite tipo do Teste: ", (tp) => {
+                Events.leitor.question("\nDigite o código da Aeronave verificada: ", (a) => {
+                    Events.leitor.question("Digite tipo do Teste: ", (tp) => {
                         Teste.carregar(a, tp)
+                        menuT()
                     })
                 })
+                menuT()
                 break;
+
+
             case "4":
-                caseA("\nDigite o código da Aeronave verificada: ", (a) => {
-                    caseT("Digite tipo do Teste: ", (tp) => {
+                Events.caseA("\nDigite o código da Aeronave verificada: ", (a) => {
+                    Events.caseT("Digite tipo do Teste: ", (tp) => {
                         tp.remover(a)
                     })
                 })
+                menuT()
                 break;
+
+
             case "5":
                 iniciar()
                 break;
+
+
             default:
                 menuT()
+
+                
         }
     })
 }
@@ -327,11 +413,11 @@ export function menuR() {
     console.log("2 - Salvar")
     console.log('3 - Voltar ao Menu Principal')
     let r = new Relatorio()
-    leitor.question("\nDigite a opção: ", (opcao) => {
+    Events.leitor.question("\nDigite a opção: ", (opcao) => {
         switch (opcao) {
             case "1":
-                caseA("\nDigite o código da Aeronave: ", (a) => {
-                    leitor.question("Digite o nome do Cliente: ", (nome) => {
+                Events.caseA("\nDigite o código da Aeronave: ", (a) => {
+                    Events.leitor.question("Digite o nome do Cliente: ", (nome) => {
                         console.log('\nRelatório:\n')
                         console.log(r.gerarRelatorio(a, nome))
                         menuR()
@@ -339,8 +425,8 @@ export function menuR() {
                 })
                 break;
             case "2":
-                caseA("\nDigite o código da Aeronave: ", (a) => {
-                    leitor.question("Digite o nome do Cliente: ", (nome) => {
+                Events.caseA("\nDigite o código da Aeronave: ", (a) => {
+                    Events.leitor.question("Digite o nome do Cliente: ", (nome) => {
                         r.salvarEmArquivo(a, nome)
                         console.log("Relatório SALVADO")
                         menuR()

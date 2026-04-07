@@ -4,7 +4,7 @@ export enum TipoPeca {
 }
 
 export enum StatusPeca {
-    EM_PRODUCAO = "EM PRODUCAO",
-    EM_TRANSPORTE = "EM TRANSPORTE",
+    EM_PRODUCAO = "EM_PRODUCAO",
+    EM_TRANSPORTE = "EM_TRANSPORTE",
     PRONTA = "PRONTA"
 }
